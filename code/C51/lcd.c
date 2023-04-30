@@ -123,6 +123,6 @@ void lcd_test(void)
 void lcd_display(float val)
 {
     char buf[5];
-    sprintf(buf, "%0.2f", val);
-    LCD_Write_String(4, 1, buf);
+    sprintf(buf, "%0.3f", val);
+    LCD_Write_String(6, 1, buf);
 }

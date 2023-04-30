@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   LCD                                                               04/30/2023 22:03:28 PAGE 1   
+C51 COMPILER V9.60.0.0   LCD                                                               04/30/2023 22:26:48 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE LCD
@@ -62,7 +62,7 @@ line level    source
   52          
   53          void LCD_Write_String(unsigned char x, unsigned char y, unsigned char *s)
   54          {
-C51 COMPILER V9.60.0.0   LCD                                                               04/30/2023 22:03:28 PAGE 2   
+C51 COMPILER V9.60.0.0   LCD                                                               04/30/2023 22:26:48 PAGE 2   
 
   55   1          if (y == 0)
   56   1          {
@@ -126,7 +126,7 @@ line level    source
  114   1          LCD_Write_String(0, 0, "set:");
  115   1          LCD_Write_String(11, 0, "mg/m");
  116   1          LCD_Write_Char(15, 0, 0);
-C51 COMPILER V9.60.0.0   LCD                                                               04/30/2023 22:03:28 PAGE 3   
+C51 COMPILER V9.60.0.0   LCD                                                               04/30/2023 22:26:48 PAGE 3   
 
  117   1      
  118   1          LCD_Write_String(0, 1, "cur:");
@@ -137,8 +137,8 @@ line level    source
  123          void lcd_display(float val)
  124          {
  125   1          char buf[5];
- 126   1          sprintf(buf, "%0.2f", val);
- 127   1          LCD_Write_String(4, 1, buf);
+ 126   1          sprintf(buf, "%0.3f", val);
+ 127   1          LCD_Write_String(6, 1, buf);
  128   1      }
 
 

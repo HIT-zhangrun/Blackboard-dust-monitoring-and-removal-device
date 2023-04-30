@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              04/30/2023 22:03:28 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              04/30/2023 22:26:48 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
@@ -18,49 +18,102 @@ line level    source
    8          sbit led_y  = P0^1;
    9          sbit led_g  = P0^2;
   10          
-  11          void set_led_rgb(uint8_t on1, uint8_t on2, uint8_t on3)
-  12          {
-  13   1          led_g = !on1;
-  14   1          led_y = !on2;
-  15   1          led_r = !on3;
-  16   1      }
-  17          
-  18          void main()
-  19          {
-  20   1          // LCD_Init();
-  21   1          // LCD_Clear();
-  22   1          float i = 0.1;
-  23   1      
-  24   1          lcd_test();
-  25   1          set_led_rgb(1, 1, 1);
-  26   1          DelayMs(100);
-  27   1          set_led_rgb(0, 0, 0);
-  28   1      
-  29   1          lcd_display(i);
-  30   1          DelayMs(20);
-  31   1      
-  32   1      
-  33   1      
-  34   1          while(1)
-  35   1          {
-  36   2      
-  37   2              // int32_t adc_val = adc_sample()
-  38   2              // lcd_display(adc_val);
-  39   2              // key_monitor();
-  40   2              // led_buzz_fan_monitor();
-  41   2          }
-  42   1      }
+  11          sbit CS   = P3^4;
+  12          sbit CLK  = P3^5;
+  13          sbit DIDO = P3^6;
+  14          
+  15          static float adc_val = 0;
+  16          
+  17          int32_t adc_sample()
+  18          {
+  19   1          uint8_t i, dat;
+  20   1          CS = 1;              //ADC0832未工作时，CS端为高电平，此时芯片禁用
+  21   1          CLK =1;
+  22   1          CS = 0;
+  23   1          DIDO = 1; CLK = 0;  CLK = 1; //SCLK第一个下降沿来到时，DI = 1启动ADC0832
+  24   1          DIDO = 1; CLK = 0;  CLK = 1;  //SCLK第二个下降沿
+  25   1          DIDO = 0; CLK = 0;  CLK = 1; //SCLK第三个下降沿，发送1,0选择通道cho
+  26   1          DIDO = 1;                                //释放总线
+  27   1          for(i = 0; i < 8; i++)                  //第4个下降沿到第11个下降沿
+  28   1          {
+  29   2              CLK = 0;           //clk处于下降沿，每一个下降沿DO端输入下一个
+  30   2              if(DIDO) dat |= 0x01;
+  31   2              // dat = dat | 0x01,dat和0x01做“或”的运算，意思是最低位置1，其它位保持不�
+             -��。
+  32   2              CLK = 1;                       //clk处于上升沿
+  33   2              dat <<= 1;                          //数据左移
+  34   2          }
+  35   1      
+  36   1          adc_val = dat;
+  37   1          adc_val = adc_val * 5 / 255;
+  38   1      
+  39   1          if (adc_val < 0.5)
+  40   1          {
+  41   2              adc_val = 0.5;
+  42   2          }
+  43   1          if (adc_val > 3.5)
+  44   1          {
+  45   2              adc_val = 3.5;
+  46   2          }
+  47   1          adc_val = (adc_val - 0.5) / 6.0;
+  48   1      
+  49   1          return (dat);
+  50   1          CS = 1;                                  //ADC0832停止工作
+  51   1      }
+  52          
+  53          void set_led_rgb(uint8_t on1, uint8_t on2, uint8_t on3)
+C51 COMPILER V9.60.0.0   MAIN                                                              04/30/2023 22:26:48 PAGE 2   
+
+  54          {
+  55   1          led_g = !on1;
+  56   1          led_y = !on2;
+  57   1          led_r = !on3;
+  58   1      }
+  59          
+  60          void main()
+  61          {
+  62   1          // LCD_Init();
+  63   1          // LCD_Clear();
+  64   1      
+  65   1          lcd_test();
+  66   1          set_led_rgb(1, 1, 1);
+  67   1          DelayMs(100);
+  68   1          set_led_rgb(0, 0, 0);
+  69   1      
+  70   1          // lcd_display(i);
+  71   1          DelayMs(20);
+  72   1      
+  73   1          adc_sample();
+  74   1          lcd_display(adc_val);
+  75   1      
+  76   1      
+  77   1      
+  78   1          while(1)
+  79   1          {
+  80   2              DelayMs(20);
+  81   2      
+  82   2          adc_sample();
+  83   2      
+  84   2          lcd_display(adc_val);
+  85   2      
+  86   2              // int32_t adc_val = adc_sample()
+  87   2              // lcd_display(adc_val);
+  88   2              // key_monitor();
+  89   2              // led_buzz_fan_monitor();
+  90   2          }
+  91   1      }
+*** WARNING C294 IN LINE 50 OF main.c: unreachable code
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     77    ----
+   CODE SIZE        =    298    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       4
+   DATA SIZE        =      4       1
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

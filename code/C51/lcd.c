@@ -17,11 +17,6 @@ sbit EN = P0^4;
 
 #define DataPort P2
 
-void DelayUs2x(unsigned char t)
-{
-    while(--t);
-}
-
 void LCD_Write_Com(unsigned char com)
 {
     DataPort= com;
@@ -129,6 +124,6 @@ void lcd_display(uint8_t set_val, float val)
 
     val_tmp = set_val;
 
-    sprintf(buf, "%0.3f", val_tmp / 10);
+    sprintf(buf, "%0.3f", val_tmp / 100);
     LCD_Write_String(5, 0, buf);
 }

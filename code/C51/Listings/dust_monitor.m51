@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    05/01/2023  00:16:12  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    05/01/2023  00:54:07  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -57,28 +57,27 @@ LINK MAP OF MODULE:  .\Objects\dust_monitor (?C_STARTUP)
             CODE    0013H     0003H     ABSOLUTE     
             CODE    0016H     05DDH     UNIT         ?C?LIB_CODE
             CODE    05F3H     046FH     UNIT         ?PR?PRINTF?PRINTF
-            CODE    0A62H     00D1H     UNIT         ?PR?ADC_SAMPLE?MAIN
-            CODE    0B33H     008CH     UNIT         ?C_C51STARTUP
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/01/2023  00:16:12  PAGE 2
+            CODE    0A62H     00D2H     UNIT         ?PR?MAIN?MAIN
+            CODE    0B34H     00CFH     UNIT         ?PR?ADC_SAMPLE?MAIN
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/01/2023  00:54:07  PAGE 2
 
 
-            CODE    0BBFH     0064H     UNIT         ?PR?_LCD_DISPLAY?LCD
-            CODE    0C23H     0055H     UNIT         ?CO?LCD
-            CODE    0C78H     004AH     UNIT         ?PR?LCD_TEST?LCD
-            CODE    0CC2H     0044H     UNIT         ?PR?INT_0?MAIN
-            CODE    0D06H     0044H     UNIT         ?PR?INT_1?MAIN
-            CODE    0D4AH     0041H     UNIT         ?PR?MAIN?MAIN
-            CODE    0D8BH     003AH     UNIT         ?PR?LCD_INIT?LCD
-            CODE    0DC5H     0036H     UNIT         ?PR?_LCD_WRITE_STRING?LCD
-            CODE    0DFBH     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
-            CODE    0E22H     0022H     UNIT         ?PR?LCD_FILLCGRAM?LCD
-            CODE    0E44H     001AH     UNIT         ?PR?_LCD_WRITE_CHAR?LCD
-            CODE    0E5EH     0015H     UNIT         ?PR?_DELAYMS?DELAY
-            CODE    0E73H     0013H     UNIT         ?PR?_SET_LED_RGB?MAIN
-            CODE    0E86H     0013H     UNIT         ?PR?_LCD_WRITE_COM?LCD
-            CODE    0E99H     0013H     UNIT         ?PR?_LCD_WRITE_DATA?LCD
-            CODE    0EACH     000AH     UNIT         ?C_INITSEG
-            CODE    0EB6H     0003H     UNIT         ?PR?_DELAYUS2X?LCD
+            CODE    0C03H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0C8FH     0064H     UNIT         ?PR?_LCD_DISPLAY?LCD
+            CODE    0CF3H     0055H     UNIT         ?CO?LCD
+            CODE    0D48H     004AH     UNIT         ?PR?LCD_TEST?LCD
+            CODE    0D92H     0044H     UNIT         ?PR?INT_0?MAIN
+            CODE    0DD6H     0044H     UNIT         ?PR?INT_1?MAIN
+            CODE    0E1AH     003AH     UNIT         ?PR?LCD_INIT?LCD
+            CODE    0E54H     0036H     UNIT         ?PR?_LCD_WRITE_STRING?LCD
+            CODE    0E8AH     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    0EB1H     0022H     UNIT         ?PR?LCD_FILLCGRAM?LCD
+            CODE    0ED3H     001AH     UNIT         ?PR?_LCD_WRITE_CHAR?LCD
+            CODE    0EEDH     0015H     UNIT         ?PR?_DELAYMS?DELAY
+            CODE    0F02H     0013H     UNIT         ?PR?_LCD_WRITE_COM?LCD
+            CODE    0F15H     0013H     UNIT         ?PR?_LCD_WRITE_DATA?LCD
+            CODE    0F28H     0010H     UNIT         ?PR?_SET_LED_RGB?MAIN
+            CODE    0F38H     000AH     UNIT         ?C_INITSEG
 
 
 
@@ -119,10 +118,10 @@ SEGMENT                              BIT_GROUP          DATA_GROUP
   +--> ?CO?LCD
   +--> ?PR?_LCD_WRITE_DATA?LCD
 
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/01/2023  00:16:12  PAGE 3
-
-
 ?PR?_LCD_WRITE_DATA?LCD           -----    -----      -----    -----
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/01/2023  00:54:07  PAGE 3
+
+
   +--> ?PR?_DELAYMS?DELAY
 
 ?PR?LCD_CLEAR?LCD                 -----    -----      -----    -----
@@ -179,10 +178,10 @@ SYMBOL TABLE OF MODULE:  .\Objects\dust_monitor (?C_STARTUP)
 
   -------         MODULE        ?C?FPCMP
   C:02B6H         PUBLIC        ?C?FPCMP
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/01/2023  00:16:12  PAGE 4
-
-
   C:02B4H         PUBLIC        ?C?FPCMP3
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/01/2023  00:54:07  PAGE 4
+
+
   -------         ENDMOD        ?C?FPCMP
 
   -------         MODULE        ?C?FCAST
@@ -235,14 +234,8 @@ SYMBOL TABLE OF MODULE:  .\Objects\dust_monitor (?C_STARTUP)
   -------         ENDMOD        ?C?CCASE
 
   -------         MODULE        PUTCHAR
-  C:0DFBH         PUBLIC        _PUTCHAR
+  C:0E8AH         PUBLIC        _PUTCHAR
   -------         ENDMOD        PUTCHAR
 
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/01/2023  00:16:12  PAGE 5
-
-
-    SEGMENT: ?PR?_DELAYUS2X?LCD
-
-Program Size: data=53.1 xdata=0 code=3768
-LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
+Program Size: data=53.1 xdata=0 code=3905
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

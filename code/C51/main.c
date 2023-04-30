@@ -1,7 +1,5 @@
 #include "reg51.h"
-#include "adc.h"
 #include "lcd.h"
-#include "key.h"
 #include "delay.h"
 
 sbit led_r  = P0^0;
@@ -12,10 +10,12 @@ sbit CLK  = P3^5;
 sbit DIDO = P3^6;
 sbit key1 = P3^2;
 sbit key2 = P3^3;
+sbit fan = P3^7;
+sbit buzz = P0^3;
 
 static float adc_val = 0;
 
-int32_t adc_sample()
+void adc_sample()
 {
     uint8_t i, dat;
     CS = 1;              //ADC0832未工作时，CS端为高电平，此时芯片禁用
@@ -46,19 +46,17 @@ int32_t adc_sample()
         adc_val = 3.5;
     }
     adc_val = (adc_val - 0.5) / 6.0;
-
-    return (dat);
     CS = 1;                                  //ADC0832停止工作
 }
 
 void set_led_rgb(uint8_t on1, uint8_t on2, uint8_t on3)
 {
-    led_g = !on1;
-    led_y = !on2;
-    led_r = !on3;
+    led_g = on3;
+    led_y = on2;
+    led_r = on1;
 }
 
-static uint8_t dust_monitor_val = 20;
+static uint8_t dust_monitor_val = 35;
 
 void int_0() interrupt 0
 {
@@ -83,11 +81,11 @@ void main()
 {
     // LCD_Init();
     // LCD_Clear();
-
+		buzz = 0;
+	  fan = 0;
     lcd_test();
+
     set_led_rgb(1, 1, 1);
-    DelayMs(100);
-    set_led_rgb(0, 0, 0);
 
 
     EA = 1;
@@ -98,10 +96,29 @@ void main()
 
     while(1)
     {
-        DelayMs(1);
+        DelayMs(10);
 
         adc_sample();
 
         lcd_display(dust_monitor_val, adc_val);
+
+        if (dust_monitor_val <= adc_val * 100)
+        {
+            set_led_rgb(0, 1, 1);
+            buzz = 1;
+            fan = 1;
+            continue;
+        }
+        if (dust_monitor_val <= adc_val * 200)
+        {
+            set_led_rgb(1, 0, 1);
+            buzz = 0;
+            fan = 0;
+            continue;
+        }
+        set_led_rgb(1, 1, 0);
+        buzz = 0;
+        fan = 0;
+        continue;
     }
 }

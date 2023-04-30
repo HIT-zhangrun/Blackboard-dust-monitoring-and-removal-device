@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   LCD                                                               05/01/2023 00:16:12 PAGE 1   
+C51 COMPILER V9.60.0.0   LCD                                                               05/01/2023 00:54:07 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE LCD
@@ -27,129 +27,124 @@ line level    source
   17          
   18          #define DataPort P2
   19          
-  20          void DelayUs2x(unsigned char t)
+  20          void LCD_Write_Com(unsigned char com)
   21          {
-  22   1          while(--t);
-  23   1      }
-  24          
-  25          void LCD_Write_Com(unsigned char com)
-  26          {
-  27   1          DataPort= com;
-  28   1          RS_CLR;
-  29   1          RW_CLR;
-  30   1          DelayMs(10);
-  31   1          EN_SET;
-  32   1          _nop_();
-  33   1          EN_CLR;
-  34   1      }
-  35          
-  36          void LCD_Write_Data(unsigned char Data)
-  37          {
-  38   1          DataPort = Data;
-  39   1          RS_SET;
-  40   1          RW_CLR;
-  41   1          DelayMs(10);
-  42   1          EN_SET;
-  43   1          _nop_();
-  44   1          EN_CLR;
-  45   1      }
-  46          
-  47          void LCD_Clear(void)
-  48          {
-  49   1          LCD_Write_Com(0x01);
-  50   1          DelayMs(20);
-  51   1      }
-  52          
-  53          void LCD_Write_String(unsigned char x, unsigned char y, unsigned char *s)
-  54          {
-C51 COMPILER V9.60.0.0   LCD                                                               05/01/2023 00:16:12 PAGE 2   
+  22   1          DataPort= com;
+  23   1          RS_CLR;
+  24   1          RW_CLR;
+  25   1          DelayMs(10);
+  26   1          EN_SET;
+  27   1          _nop_();
+  28   1          EN_CLR;
+  29   1      }
+  30          
+  31          void LCD_Write_Data(unsigned char Data)
+  32          {
+  33   1          DataPort = Data;
+  34   1          RS_SET;
+  35   1          RW_CLR;
+  36   1          DelayMs(10);
+  37   1          EN_SET;
+  38   1          _nop_();
+  39   1          EN_CLR;
+  40   1      }
+  41          
+  42          void LCD_Clear(void)
+  43          {
+  44   1          LCD_Write_Com(0x01);
+  45   1          DelayMs(20);
+  46   1      }
+  47          
+  48          void LCD_Write_String(unsigned char x, unsigned char y, unsigned char *s)
+  49          {
+  50   1          if (y == 0)
+  51   1          {
+  52   2              LCD_Write_Com(0x80 + x);     //表示第一行
+  53   2          }
+  54   1          else
+C51 COMPILER V9.60.0.0   LCD                                                               05/01/2023 00:54:07 PAGE 2   
 
-  55   1          if (y == 0)
-  56   1          {
-  57   2              LCD_Write_Com(0x80 + x);     //表示第一行
-  58   2          }
-  59   1          else
-  60   1          {
-  61   2              LCD_Write_Com(0xC0 + x);      //表示第二行
+  55   1          {
+  56   2              LCD_Write_Com(0xC0 + x);      //表示第二行
+  57   2          }
+  58   1          while (*s)
+  59   1          {
+  60   2              LCD_Write_Data( *s);
+  61   2              s++;
   62   2          }
-  63   1          while (*s)
-  64   1          {
-  65   2              LCD_Write_Data( *s);
-  66   2              s++;
-  67   2          }
-  68   1      }
-  69          
-  70          void LCD_Write_Char(unsigned char x, unsigned char y, unsigned char Data)
-  71          {
-  72   1          if (y == 0)
-  73   1          {
-  74   2              LCD_Write_Com(0x80 + x);
-  75   2          }
-  76   1          else
-  77   1          {
-  78   2              LCD_Write_Com(0xC0 + x);
-  79   2          }
-  80   1          LCD_Write_Data(Data);
-  81   1      }
-  82          
-  83          unsigned char code mychar[64] = {0x0e, 0x02, 0x0e, 0x02, 0x0e, 0x00, 0x00, 0x00};
-  84          
-  85          void LCD_FillCGRAM(void)            //自定义字符的填充函数
-  86          {
-  87   1          unsigned char i;
-  88   1          LCD_Write_Com(0x40);             //写指令告诉是在写自定义字符
-  89   1          for (i = 0; i < 8; i++)         //i <= 64
-  90   1          {
-  91   2              LCD_Write_Data(mychar[i]);   //把3的字模数据写进去
-  92   2          }
-  93   1      }
-  94          
-  95          void LCD_Init(void)
-  96          {
-  97   1          LCD_Write_Com(0x01);
-  98   1          DelayMs(20);
-  99   1          LCD_Write_Com(0x38);
- 100   1          DelayMs(20);
- 101   1          LCD_Write_Com(0x0C);
- 102   1          DelayMs(20);
- 103   1          LCD_Write_Com(0x06);
- 104   1          DelayMs(20);
- 105   1          LCD_FillCGRAM();
- 106   1          DelayMs(20);
- 107   1      }
- 108          
- 109          void lcd_test(void)
- 110          {
- 111   1          LCD_Init();
- 112   1          LCD_Clear();
- 113   1      
- 114   1          LCD_Write_String(0, 0, "set:");
- 115   1          LCD_Write_String(11, 0, "mg/m");
- 116   1          LCD_Write_Char(15, 0, 0);
-C51 COMPILER V9.60.0.0   LCD                                                               05/01/2023 00:16:12 PAGE 3   
+  63   1      }
+  64          
+  65          void LCD_Write_Char(unsigned char x, unsigned char y, unsigned char Data)
+  66          {
+  67   1          if (y == 0)
+  68   1          {
+  69   2              LCD_Write_Com(0x80 + x);
+  70   2          }
+  71   1          else
+  72   1          {
+  73   2              LCD_Write_Com(0xC0 + x);
+  74   2          }
+  75   1          LCD_Write_Data(Data);
+  76   1      }
+  77          
+  78          unsigned char code mychar[64] = {0x0e, 0x02, 0x0e, 0x02, 0x0e, 0x00, 0x00, 0x00};
+  79          
+  80          void LCD_FillCGRAM(void)            //自定义字符的填充函数
+  81          {
+  82   1          unsigned char i;
+  83   1          LCD_Write_Com(0x40);             //写指令告诉是在写自定义字符
+  84   1          for (i = 0; i < 8; i++)         //i <= 64
+  85   1          {
+  86   2              LCD_Write_Data(mychar[i]);   //把3的字模数据写进去
+  87   2          }
+  88   1      }
+  89          
+  90          void LCD_Init(void)
+  91          {
+  92   1          LCD_Write_Com(0x01);
+  93   1          DelayMs(20);
+  94   1          LCD_Write_Com(0x38);
+  95   1          DelayMs(20);
+  96   1          LCD_Write_Com(0x0C);
+  97   1          DelayMs(20);
+  98   1          LCD_Write_Com(0x06);
+  99   1          DelayMs(20);
+ 100   1          LCD_FillCGRAM();
+ 101   1          DelayMs(20);
+ 102   1      }
+ 103          
+ 104          void lcd_test(void)
+ 105          {
+ 106   1          LCD_Init();
+ 107   1          LCD_Clear();
+ 108   1      
+ 109   1          LCD_Write_String(0, 0, "set:");
+ 110   1          LCD_Write_String(11, 0, "mg/m");
+ 111   1          LCD_Write_Char(15, 0, 0);
+ 112   1      
+ 113   1          LCD_Write_String(0, 1, "cur:");
+ 114   1          LCD_Write_String(11, 1, "mg/m");
+ 115   1          LCD_Write_Char(15, 1, 0);
+ 116   1      }
+C51 COMPILER V9.60.0.0   LCD                                                               05/01/2023 00:54:07 PAGE 3   
 
- 117   1      
- 118   1          LCD_Write_String(0, 1, "cur:");
- 119   1          LCD_Write_String(11, 1, "mg/m");
- 120   1          LCD_Write_Char(15, 1, 0);
- 121   1      }
- 122          
- 123          void lcd_display(uint8_t set_val, float val)
- 124          {
- 125   1          char buf[5];
- 126   1          float val_tmp;
- 127   1          sprintf(buf, "%0.3f", val);
- 128   1          LCD_Write_String(4, 1, buf);
- 129   1      
- 130   1          val_tmp = set_val;
- 131   1      
- 132   1          sprintf(buf, "%0.3f", val_tmp / 10);
- 133   1          LCD_Write_String(4, 0, buf);
- 134   1      }
+ 117          
+ 118          void lcd_display(uint8_t set_val, float val)
+ 119          {
+ 120   1          char buf[5];
+ 121   1          float val_tmp;
+ 122   1          sprintf(buf, "%0.3f", val);
+ 123   1          LCD_Write_String(5, 1, buf);
+ 124   1      
+ 125   1          val_tmp = set_val;
+ 126   1      
+ 127   1          sprintf(buf, "%0.3f", val_tmp / 100);
+ 128   1          LCD_Write_String(5, 0, buf);
+ 129   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    399    ----
+   CODE SIZE        =    396    ----
    CONSTANT SIZE    =     85    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

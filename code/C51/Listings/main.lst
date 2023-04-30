@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              05/01/2023 00:16:12 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              05/01/2023 00:54:07 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
@@ -9,23 +9,23 @@ COMPILER INVOKED BY: C:\Keil_v4\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) PRINT(.
 line level    source
 
    1          #include "reg51.h"
-   2          #include "adc.h"
-   3          #include "lcd.h"
-   4          #include "key.h"
-   5          #include "delay.h"
-   6          
-   7          sbit led_r  = P0^0;
-   8          sbit led_y  = P0^1;
-   9          sbit led_g  = P0^2;
-  10          sbit CS   = P3^4;
-  11          sbit CLK  = P3^5;
-  12          sbit DIDO = P3^6;
-  13          sbit key1 = P3^2;
-  14          sbit key2 = P3^3;
+   2          #include "lcd.h"
+   3          #include "delay.h"
+   4          
+   5          sbit led_r  = P0^0;
+   6          sbit led_y  = P0^1;
+   7          sbit led_g  = P0^2;
+   8          sbit CS   = P3^4;
+   9          sbit CLK  = P3^5;
+  10          sbit DIDO = P3^6;
+  11          sbit key1 = P3^2;
+  12          sbit key2 = P3^3;
+  13          sbit fan = P3^7;
+  14          sbit buzz = P0^3;
   15          
   16          static float adc_val = 0;
   17          
-  18          int32_t adc_sample()
+  18          void adc_sample()
   19          {
   20   1          uint8_t i, dat;
   21   1          CS = 1;              //ADC0832未工作时，CS端为高电平，此时芯片禁用
@@ -57,81 +57,97 @@ line level    source
   46   2              adc_val = 3.5;
   47   2          }
   48   1          adc_val = (adc_val - 0.5) / 6.0;
-  49   1      
-  50   1          return (dat);
-  51   1          CS = 1;                                  //ADC0832停止工作
-  52   1      }
-  53          
-C51 COMPILER V9.60.0.0   MAIN                                                              05/01/2023 00:16:12 PAGE 2   
+  49   1          CS = 1;                                  //ADC0832停止工作
+  50   1      }
+  51          
+  52          void set_led_rgb(uint8_t on1, uint8_t on2, uint8_t on3)
+  53          {
+C51 COMPILER V9.60.0.0   MAIN                                                              05/01/2023 00:54:07 PAGE 2   
 
-  54          void set_led_rgb(uint8_t on1, uint8_t on2, uint8_t on3)
-  55          {
-  56   1          led_g = !on1;
-  57   1          led_y = !on2;
-  58   1          led_r = !on3;
-  59   1      }
+  54   1          led_g = on3;
+  55   1          led_y = on2;
+  56   1          led_r = on1;
+  57   1      }
+  58          
+  59          static uint8_t dust_monitor_val = 35;
   60          
-  61          static uint8_t dust_monitor_val = 20;
-  62          
-  63          void int_0() interrupt 0
-  64          {
-  65   1          DelayMs(2);
-  66   1          if (key1 == 0)
-  67   1          {
-  68   2              dust_monitor_val += 1;
-  69   2          }
-  70   1      }
-  71          
-  72          void int_1() interrupt 2
-  73          {
-  74   1          DelayMs(2);
-  75   1          if (key2 == 0)
-  76   1          {
-  77   2              dust_monitor_val -= 1;
-  78   2          }
-  79   1      }
-  80          
-  81          
-  82          void main()
-  83          {
-  84   1          // LCD_Init();
-  85   1          // LCD_Clear();
-  86   1      
-  87   1          lcd_test();
+  61          void int_0() interrupt 0
+  62          {
+  63   1          DelayMs(2);
+  64   1          if (key1 == 0)
+  65   1          {
+  66   2              dust_monitor_val += 1;
+  67   2          }
+  68   1      }
+  69          
+  70          void int_1() interrupt 2
+  71          {
+  72   1          DelayMs(2);
+  73   1          if (key2 == 0)
+  74   1          {
+  75   2              dust_monitor_val -= 1;
+  76   2          }
+  77   1      }
+  78          
+  79          
+  80          void main()
+  81          {
+  82   1          // LCD_Init();
+  83   1          // LCD_Clear();
+  84   1          buzz = 0;
+  85   1          fan = 0;
+  86   1          lcd_test();
+  87   1      
   88   1          set_led_rgb(1, 1, 1);
-  89   1          DelayMs(100);
-  90   1          set_led_rgb(0, 0, 0);
-  91   1      
-  92   1      
-  93   1          EA = 1;
-  94   1          EX0 = 1;
-  95   1          IT0 = 1;
-  96   1          EX1 = 1;
-  97   1          IT1 = 1;
-  98   1      
-  99   1          while(1)
- 100   1          {
- 101   2              DelayMs(1);
+  89   1      
+  90   1      
+  91   1          EA = 1;
+  92   1          EX0 = 1;
+  93   1          IT0 = 1;
+  94   1          EX1 = 1;
+  95   1          IT1 = 1;
+  96   1      
+  97   1          while(1)
+  98   1          {
+  99   2              DelayMs(10);
+ 100   2      
+ 101   2              adc_sample();
  102   2      
- 103   2              adc_sample();
+ 103   2              lcd_display(dust_monitor_val, adc_val);
  104   2      
- 105   2              lcd_display(dust_monitor_val, adc_val);
- 106   2          }
- 107   1      }
-*** WARNING C294 IN LINE 51 OF main.c: unreachable code
+ 105   2              if (dust_monitor_val <= adc_val * 100)
+ 106   2              {
+ 107   3                  set_led_rgb(0, 1, 1);
+ 108   3                  buzz = 1;
+ 109   3                  fan = 1;
+ 110   3                  continue;
+ 111   3              }
+ 112   2              if (dust_monitor_val <= adc_val * 200)
+ 113   2              {
+ 114   3                  set_led_rgb(1, 0, 1);
+ 115   3                  buzz = 0;
+C51 COMPILER V9.60.0.0   MAIN                                                              05/01/2023 00:54:07 PAGE 3   
+
+ 116   3                  fan = 0;
+ 117   3                  continue;
+ 118   3              }
+ 119   2              set_led_rgb(1, 1, 0);
+ 120   2              buzz = 0;
+ 121   2              fan = 0;
+ 122   2              continue;
+ 123   2          }
+ 124   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    429    ----
+   CODE SIZE        =    569    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-C51 COMPILER V9.60.0.0   MAIN                                                              05/01/2023 00:16:12 PAGE 3   
-
    DATA SIZE        =      5       1
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

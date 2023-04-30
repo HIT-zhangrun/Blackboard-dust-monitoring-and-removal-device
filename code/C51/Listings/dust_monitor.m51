@@ -1,0 +1,219 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    04/30/2023  22:03:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V4\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\main.obj, .\Objects\delay.obj, .\Objects\lcd.obj, .\Objects
+>> \key.obj TO .\Objects\dust_monitor PRINT (.\Listings\dust_monitor.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL WITH FLOATING POINT ARITHMETIC
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\main.obj (MAIN)
+  .\Objects\delay.obj (DELAY)
+  .\Objects\lcd.obj (LCD)
+  .\Objects\key.obj (KEY)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (PRINTF)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (?C?FPROUND)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (?C?FPCONVERT)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (?C?FPADD)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (?C?FPMUL)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (?C?FPDIV)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (?C?FTNPWR)
+  C:\KEIL_V4\C51\LIB\C51FPS.LIB (?C?FPGETOPN)
+  C:\KEIL_V4\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL_V4\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL_V4\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL_V4\C51\LIB\C51S.LIB (?C?CSTPTR)
+  C:\KEIL_V4\C51\LIB\C51S.LIB (?C?PLDIIDATA)
+  C:\KEIL_V4\C51\LIB\C51S.LIB (?C?CCASE)
+  C:\KEIL_V4\C51\LIB\C51S.LIB (PUTCHAR)
+
+
+LINK MAP OF MODULE:  .\Objects\dust_monitor (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?KEY
+            DATA    000AH     0001H     UNIT         ?DT?KEY_MONITOR?KEY
+                    000BH     0015H                  *** GAP ***
+            BIT     0020H.0   0001H.1   UNIT         _BIT_GROUP_
+                    0021H.1   0000H.7                *** GAP ***
+            DATA    0022H     0025H     UNIT         _DATA_GROUP_
+            IDATA   0047H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0518H     UNIT         ?C?LIB_CODE
+            CODE    051BH     046FH     UNIT         ?PR?PRINTF?PRINTF
+            CODE    098AH     008CH     UNIT         ?C_C51STARTUP
+            CODE    0A16H     0055H     UNIT         ?CO?LCD
+            CODE    0A6BH     004AH     UNIT         ?PR?LCD_TEST?LCD
+            CODE    0AB5H     003AH     UNIT         ?PR?MAIN?MAIN
+            CODE    0AEFH     003AH     UNIT         ?PR?LCD_INIT?LCD
+            CODE    0B29H     0036H     UNIT         ?PR?_LCD_WRITE_STRING?LCD
+            CODE    0B5FH     0027H     UNIT         ?PR?_LCD_DISPLAY?LCD
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/30/2023  22:03:29  PAGE 2
+
+
+            CODE    0B86H     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    0BADH     0025H     UNIT         ?PR?KEY_MONITOR?KEY
+            CODE    0BD2H     0022H     UNIT         ?PR?LCD_FILLCGRAM?LCD
+            CODE    0BF4H     001AH     UNIT         ?PR?_LCD_WRITE_CHAR?LCD
+            CODE    0C0EH     0015H     UNIT         ?PR?_DELAYMS?DELAY
+            CODE    0C23H     0013H     UNIT         ?PR?_SET_LED_RGB?MAIN
+            CODE    0C36H     0013H     UNIT         ?PR?_LCD_WRITE_COM?LCD
+            CODE    0C49H     0013H     UNIT         ?PR?_LCD_WRITE_DATA?LCD
+            CODE    0C5CH     000CH     UNIT         ?PR?LCD_CLEAR?LCD
+            CODE    0C68H     000BH     UNIT         ?PR?_MODIFY_DUST_VAL?KEY
+            CODE    0C73H     0005H     UNIT         ?PR?GET_DUST_MONITOR_VAL?KEY
+            CODE    0C78H     0005H     UNIT         ?C_INITSEG
+            CODE    0C7DH     0003H     UNIT         ?PR?_DELAYUS2X?LCD
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\dust_monitor (?C_STARTUP)
+
+
+SEGMENT                                 BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT                START    LENGTH     START    LENGTH
+------------------------------------------------------------------------
+?C_C51STARTUP                        -----    -----      -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                        -----    -----      0022H    0004H
+  +--> ?PR?LCD_TEST?LCD
+  +--> ?PR?_SET_LED_RGB?MAIN
+  +--> ?PR?_DELAYMS?DELAY
+  +--> ?PR?_LCD_DISPLAY?LCD
+
+?PR?LCD_TEST?LCD                     -----    -----      -----    -----
+  +--> ?PR?LCD_INIT?LCD
+  +--> ?PR?LCD_CLEAR?LCD
+  +--> ?CO?LCD
+  +--> ?PR?_LCD_WRITE_STRING?LCD
+  +--> ?PR?_LCD_WRITE_CHAR?LCD
+
+?PR?LCD_INIT?LCD                     -----    -----      -----    -----
+  +--> ?PR?_LCD_WRITE_COM?LCD
+  +--> ?PR?_DELAYMS?DELAY
+  +--> ?PR?LCD_FILLCGRAM?LCD
+
+?PR?_LCD_WRITE_COM?LCD               -----    -----      -----    -----
+  +--> ?PR?_DELAYMS?DELAY
+
+?PR?LCD_FILLCGRAM?LCD                -----    -----      0026H    0001H
+  +--> ?PR?_LCD_WRITE_COM?LCD
+  +--> ?CO?LCD
+  +--> ?PR?_LCD_WRITE_DATA?LCD
+
+?PR?_LCD_WRITE_DATA?LCD              -----    -----      -----    -----
+  +--> ?PR?_DELAYMS?DELAY
+
+?PR?LCD_CLEAR?LCD                    -----    -----      -----    -----
+  +--> ?PR?_LCD_WRITE_COM?LCD
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/30/2023  22:03:29  PAGE 3
+
+
+  +--> ?PR?_DELAYMS?DELAY
+
+?PR?_LCD_WRITE_STRING?LCD            -----    -----      002BH    0004H
+  +--> ?PR?_LCD_WRITE_COM?LCD
+  +--> ?PR?_LCD_WRITE_DATA?LCD
+
+?PR?_LCD_WRITE_CHAR?LCD              -----    -----      0026H    0002H
+  +--> ?PR?_LCD_WRITE_COM?LCD
+  +--> ?PR?_LCD_WRITE_DATA?LCD
+
+?PR?_LCD_DISPLAY?LCD                 -----    -----      0026H    0005H
+  +--> ?CO?LCD
+  +--> ?PR?PRINTF?PRINTF
+  +--> ?PR?_LCD_WRITE_STRING?LCD
+
+?PR?PRINTF?PRINTF                    0020H.0  0001H.1    002BH    001CH
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\dust_monitor (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PRINTF
+  D:002BH         PUBLIC        ?_PRINTF?BYTE
+  D:002BH         PUBLIC        ?_SPRINTF?BYTE
+  C:057DH         PUBLIC        _PRINTF
+  C:0577H         PUBLIC        _SPRINTF
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        ?C?FPROUND
+  C:0003H         PUBLIC        ?C?FPROUND
+  -------         ENDMOD        ?C?FPROUND
+
+  -------         MODULE        ?C?FPCONVERT
+  C:0032H         PUBLIC        ?C?FPCONVERT
+  -------         ENDMOD        ?C?FPCONVERT
+
+  -------         MODULE        ?C?FPADD
+  C:013CH         PUBLIC        ?C?FPADD
+  C:0138H         PUBLIC        ?C?FPSUB
+  -------         ENDMOD        ?C?FPADD
+
+  -------         MODULE        ?C?FPMUL
+  C:022DH         PUBLIC        ?C?FPMUL
+  -------         ENDMOD        ?C?FPMUL
+
+  -------         MODULE        ?C?FPDIV
+  C:0336H         PUBLIC        ?C?FPDIV
+  -------         ENDMOD        ?C?FPDIV
+
+  -------         MODULE        ?C?FTNPWR
+  C:0403H         PUBLIC        ?C?FTNPWR
+  -------         ENDMOD        ?C?FTNPWR
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/30/2023  22:03:29  PAGE 4
+
+
+  -------         MODULE        ?C?CLDPTR
+  C:048DH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:04A6H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:04D3H         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?PLDIIDATA
+  C:04E5H         PUBLIC        ?C?PLDIIDATA
+  -------         ENDMOD        ?C?PLDIIDATA
+
+  -------         MODULE        ?C?CCASE
+  C:04F5H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:0B86H         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_DELAYUS2X?LCD
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?GET_DUST_MONITOR_VAL?KEY
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?KEY_MONITOR?KEY
+
+Program Size: data=50.1 xdata=0 code=3200
+LINK/LOCATE RUN COMPLETE.  3 WARNING(S),  0 ERROR(S)

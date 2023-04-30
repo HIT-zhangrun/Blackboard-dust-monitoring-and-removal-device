@@ -1,0 +1,66 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              04/30/2023 22:03:28 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v4\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Obj
+                    -ects\main.obj)
+
+line level    source
+
+   1          #include "reg51.h"
+   2          #include "adc.h"
+   3          #include "lcd.h"
+   4          #include "key.h"
+   5          #include "delay.h"
+   6          
+   7          sbit led_r  = P0^0;
+   8          sbit led_y  = P0^1;
+   9          sbit led_g  = P0^2;
+  10          
+  11          void set_led_rgb(uint8_t on1, uint8_t on2, uint8_t on3)
+  12          {
+  13   1          led_g = !on1;
+  14   1          led_y = !on2;
+  15   1          led_r = !on3;
+  16   1      }
+  17          
+  18          void main()
+  19          {
+  20   1          // LCD_Init();
+  21   1          // LCD_Clear();
+  22   1          float i = 0.1;
+  23   1      
+  24   1          lcd_test();
+  25   1          set_led_rgb(1, 1, 1);
+  26   1          DelayMs(100);
+  27   1          set_led_rgb(0, 0, 0);
+  28   1      
+  29   1          lcd_display(i);
+  30   1          DelayMs(20);
+  31   1      
+  32   1      
+  33   1      
+  34   1          while(1)
+  35   1          {
+  36   2      
+  37   2              // int32_t adc_val = adc_sample()
+  38   2              // lcd_display(adc_val);
+  39   2              // key_monitor();
+  40   2              // led_buzz_fan_monitor();
+  41   2          }
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     77    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

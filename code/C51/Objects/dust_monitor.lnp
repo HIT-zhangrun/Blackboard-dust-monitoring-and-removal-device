@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\delay.obj",
+".\Objects\lcd.obj",
+".\Objects\key.obj" 
+TO ".\Objects\dust_monitor" 
+PRINT(".\Listings\dust_monitor.m51") RAMSIZE(256) 

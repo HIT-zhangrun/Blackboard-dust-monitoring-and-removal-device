@@ -120,9 +120,15 @@ void lcd_test(void)
     LCD_Write_Char(15, 1, 0);
 }
 
-void lcd_display(float val)
+void lcd_display(uint8_t set_val, float val)
 {
     char buf[5];
+    float val_tmp;
     sprintf(buf, "%0.3f", val);
-    LCD_Write_String(6, 1, buf);
+    LCD_Write_String(5, 1, buf);
+
+    val_tmp = set_val;
+
+    sprintf(buf, "%0.3f", val_tmp / 10);
+    LCD_Write_String(5, 0, buf);
 }

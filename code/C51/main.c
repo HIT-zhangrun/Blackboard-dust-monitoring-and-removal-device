@@ -7,10 +7,11 @@
 sbit led_r  = P0^0;
 sbit led_y  = P0^1;
 sbit led_g  = P0^2;
-
 sbit CS   = P3^4;
 sbit CLK  = P3^5;
 sbit DIDO = P3^6;
+sbit key1 = P3^2;
+sbit key2 = P3^3;
 
 static float adc_val = 0;
 
@@ -57,6 +58,27 @@ void set_led_rgb(uint8_t on1, uint8_t on2, uint8_t on3)
     led_r = !on3;
 }
 
+static uint8_t dust_monitor_val = 20;
+
+void int_0() interrupt 0
+{
+    DelayMs(2);
+    if (key1 == 0)
+    {
+        dust_monitor_val += 1;
+    }
+}
+
+void int_1() interrupt 2
+{
+    DelayMs(2);
+    if (key2 == 0)
+    {
+        dust_monitor_val -= 1;
+    }
+}
+
+
 void main()
 {
     // LCD_Init();
@@ -67,25 +89,19 @@ void main()
     DelayMs(100);
     set_led_rgb(0, 0, 0);
 
-    // lcd_display(i);
-    DelayMs(20);
 
-    adc_sample();
-    lcd_display(adc_val);
-
-
+    EA = 1;
+    EX0 = 1;
+    IT0 = 1;
+    EX1 = 1;
+    IT1 = 1;
 
     while(1)
     {
-        DelayMs(20);
+        DelayMs(1);
 
-    adc_sample();
+        adc_sample();
 
-    lcd_display(adc_val);
-
-        // int32_t adc_val = adc_sample()
-        // lcd_display(adc_val);
-        // key_monitor();
-        // led_buzz_fan_monitor();
+        lcd_display(dust_monitor_val, adc_val);
     }
 }
